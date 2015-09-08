@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration >
+<classPathEntry location="/home/ricky/.m2/repository/mysql/mysql-connector-java/5.1.34/mysql-connector-java-5.1.34.jar" />
+  <context id="context1" >
+    <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://127.0.0.1:3306/demo" userId="root" password="123456" />
+    <javaModelGenerator targetPackage="org.ricky.admin.ddo" targetProject="springmvc-demo-provider" />
+    <sqlMapGenerator targetPackage="org.ricky.admin.dao.mapping" targetProject="springmvc-demo-provider" />
+    <javaClientGenerator targetPackage="org.ricky.admin.dao.mapper" targetProject="springmvc-demo-provider" type="XMLMAPPER" />
+    <table schema="demo" tableName="user_t" domainObjectName="UserDo">
+      <!--  columnOverride column="???" property="???" /-->
+    </table>
+  </context>
+</generatorConfiguration>
