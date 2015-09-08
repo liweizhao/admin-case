@@ -9,6 +9,6 @@
 	
 	<bean id="UserService" class="org.ricky.admin.provider.UserServiceImpl" />
 	
-	<dubbo:service interface="com.ricky.springdemo.api.service.UserService" ref="UserService" />
+	<dubbo:service interface="org.ricky.admin.api.service.UserService" ref="UserService" />
 	
 </beans>

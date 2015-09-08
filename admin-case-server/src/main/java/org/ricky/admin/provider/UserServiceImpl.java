@@ -17,9 +17,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 
-import com.ricky.springdemo.api.pojo.LoginInfo;
-import com.ricky.springdemo.api.pojo.UserPo;
-import com.ricky.springdemo.api.service.UserService;
+import org.ricky.admin.api.pojo.LoginInfo;
+import org.ricky.admin.api.pojo.UserPo;
+import org.ricky.admin.api.service.UserService;
 
 public class UserServiceImpl implements UserService {
 	

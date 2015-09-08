@@ -8,5 +8,5 @@
   <properties>
           <skip_maven_deploy>true</skip_maven_deploy>
   </properties>
-  <name>admin-case</name>
+  <name>${project.artifactId}</name>
 </project>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>admin-case</name>
+	<name>admin-case-web</name>
 	<comment></comment>
 	<projects>
 		<project>admin-case-api</project>

@@ -1,13 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-	<groupId>com.ricky</groupId>
-	<artifactId>springmvc-demo</artifactId>
+	<groupId>org.ricky</groupId>
+	<artifactId>admin-case</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
   </parent>
 	
   <!--  groupId>com.ricky</groupId-->
-  <artifactId>springmvc-demo-provider</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
   <name>${project.artifactId}</name>
@@ -17,8 +16,8 @@
 	</properties>
 	<dependencies>
 		<dependency>
-			<groupId>com.ricky</groupId>
-			<artifactId>springmvc-demo-api</artifactId>
+			<groupId>org.ricky</groupId>
+			<artifactId>admin-case-api</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
 		<dependency>
@@ -253,8 +252,8 @@
 						<configuration>
 							<artifactItems>
 								<artifactItem>
-									<groupId>com.ricky</groupId>
-									<artifactId>springmvc-demo-provider</artifactId>
+									<groupId>org.ricky</groupId>
+									<artifactId>admin-case-server</artifactId>
 									<version>${project.parent.version}</version>
 									<outputDirectory>${project.build.directory}/dubbo</outputDirectory>
 									<includes>META-INF/assembly/**</includes>
@@ -282,4 +281,6 @@
 		</plugins>
 	</build>
 	
+	<groupId>org.ricky</groupId>
+	<artifactId>admin-case-server</artifactId>
 </project>
