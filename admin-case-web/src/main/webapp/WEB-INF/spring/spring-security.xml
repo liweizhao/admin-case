@@ -25,10 +25,24 @@
 
         <security:logout invalidate-session="true" 
         logout-success-url="/public/login.html" logout-url="/logout" />
+        
+        <security:custom-filter before="FILTER_SECURITY_INTERCEPTOR" ref="myFilter" />
     </security:http>
     
-    <security:authentication-manager>
-    	<security:authentication-provider ref="loginAuthenticationProvider">
+    <!-- 一个自定义的filter，必须包含authenticationManager,accessDecisionManager,securityMetadataSource三个属性，
+    我们的所有控制将在这三个类中实现，解释详见具体配置 -->
+    <bean id="myFilter" class="org.ricky.admin.security.MyFilterSecurityInterceptor">
+        <property name="authenticationManager"
+            ref="authenticationManager" />
+        <property name="accessDecisionManager"
+            ref="myAccessDecisionManagerBean" />
+        <property name="securityMetadataSource"
+            ref="securityMetadataSource" />
+    </bean>
+    
+    <security:authentication-manager  alias="authenticationManager">
+    	<security:authentication-provider ref="loginAuthenticationProvider"
+    	user-service-ref="myUserDetailService">
     	</security:authentication-provider>
     </security:authentication-manager>
 	
@@ -37,21 +51,15 @@
     	<!--  property name="userDetailsService" ref="loginUserDetailService"></property-->
 	</bean>
 
-    
-    <!--  security:authentication-manager>
-	  <security:authentication-provider>
-	    <security:user-service>
-		<security:user name="mkyong" password="123456" authorities="ROLE_USER" />
-	    </security:user-service>
-	  </security:authentication-provider>
-	</security:authentication-manager-->
+	<bean id="myUserDetailService"
+        class="org.ricky.admin.security.MyUserDetailService" />
 
-    <!--  security:authentication-manager>
-        <security:authentication-provider>
-            <security:jdbc-user-service
-                    data-source-ref="myContactDataSource"
-                    users-by-username-query="select email, password, enabled from system_user where email = ?"
-                    authorities-by-username-query="select u.email as login, u.user_role as role from system_user u where u.email = ?" />
-        </security:authentication-provider>
-    </security:authentication-manager-->
+    <!-- 访问决策器，决定某个用户具有的角色，是否有足够的权限去访问某个资源 -->
+    <bean id="myAccessDecisionManagerBean"
+        class="org.ricky.admin.security.MyAccessDecisionManager">
+    </bean>
+    
+    <!-- 资源源数据定义，即定义某一资源可以被哪些角色访问 -->
+    <bean id="securityMetadataSource"
+        class="org.ricky.admin.security.MyInvocationSecurityMetadataSource" />
 </beans>
