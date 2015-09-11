@@ -1,4 +1,4 @@
-package org.ricky.admin.pojo;
+package org.ricky.admin.api.pojo;
 
 import java.io.Serializable;
 
