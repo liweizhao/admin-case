@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import org.ricky.admin.api.pojo.UserPo;
-import org.ricky.admin.api.service.UserService;
+import org.ricky.admin.api.service.UserSerice;
 import org.ricky.admin.util.RetInfo;
 
 /**
