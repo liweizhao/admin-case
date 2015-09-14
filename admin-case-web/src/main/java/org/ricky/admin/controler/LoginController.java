@@ -28,10 +28,7 @@ public class LoginController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 	
-	/**
-	 * Simply selects the home view to render by returning its name.
-	 */
-	@RequestMapping(value = "/login2", method = RequestMethod.POST)  
+	@RequestMapping(value = "/login", method = RequestMethod.POST)  
 	public String login(HttpServletRequest request) {	
 		RetInfo retInfo = new RetInfo();
 		
@@ -40,7 +37,7 @@ public class LoginController {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		
-		Subject user = SecurityUtils.getSubject();
+		Subject user = SecurityUtils.getSubject();		
         UsernamePasswordToken token = new UsernamePasswordToken(
         		username, password);
         token.setRememberMe(true);
@@ -53,5 +50,16 @@ public class LoginController {
             token.clear();
             return "redirect:/public/login.html";
         }
+	}
+	
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)  
+	public String logout(HttpServletRequest request) {	
+		logger.error("logout");
+		Subject subject = SecurityUtils.getSubject();
+		if (subject.isAuthenticated()) {
+			subject.logout(); // session 会销毁，在SessionListener监听session销毁，清理权限缓存
+		}
+		
+		return "redirect:/public/login.html";
 	}
 }

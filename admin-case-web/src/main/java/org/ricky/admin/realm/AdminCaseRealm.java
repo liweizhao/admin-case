@@ -137,7 +137,7 @@ public class AdminCaseRealm extends AuthorizingRealm {
      * 将一些数据放到ShiroSession中,以便于其它地方使用 
      * @see  比如Controller,使用时直接用HttpSession.getAttribute(key)就可以取到 
      */  
-    private void setSession(Object key, Object value){  
+    protected void setSession(Object key, Object value){  
     	logger.info("setSession");  
     	
         Subject currentUser = SecurityUtils.getSubject();  
