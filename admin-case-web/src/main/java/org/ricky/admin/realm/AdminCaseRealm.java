@@ -3,7 +3,9 @@ package org.ricky.admin.realm;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -51,15 +53,26 @@ public class AdminCaseRealm extends AuthorizingRealm {
 	        logger.info("get service sucessfully");
         
 	        List<String> roles = new ArrayList<String>();  
+	        Set<String> permissions = new HashSet<String>();
 	        
 	        String name = (String) getAvailablePrincipal(principals);  
 	        UserPo userPo = userService.getUserByName(name);
 	        if (userPo != null)
 	        {
-	        	roles.add("member");
+	        	if (userPo.getRole() == 1)
+	        	{
+	        		logger.error("###admin login");
+	        		roles.add("admin");
+	        		permissions.add("admin:manage");
+	        	}
+	        	else
+	        	{
+	        		roles.add("member");
+	        	}
 		        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();  
 		        // 增加角色  
-		        info.addRoles(roles);  
+		        info.addRoles(roles); 
+		        info.addStringPermissions(permissions);
 		        return info;	
 	        }
 		} 

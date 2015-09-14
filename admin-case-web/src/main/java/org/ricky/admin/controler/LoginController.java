@@ -10,6 +10,8 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
+import org.apache.shiro.web.util.SavedRequest;
+import org.apache.shiro.web.util.WebUtils;
 import org.ricky.admin.api.pojo.UserPo;
 import org.ricky.admin.util.RetInfo;
 import org.slf4j.Logger;
@@ -28,7 +30,7 @@ public class LoginController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 	
-	@RequestMapping(value = "/login", method = RequestMethod.POST)  
+	@RequestMapping(value = "/login", method = RequestMethod.GET)  
 	public String login(HttpServletRequest request) {	
 		RetInfo retInfo = new RetInfo();
 		
@@ -44,7 +46,17 @@ public class LoginController {
         
         try {
             user.login(token);
-            return "redirect:/protected/index.html";
+            
+            String url = "/protected/index.html";
+            SavedRequest savedRequest = WebUtils.getSavedRequest(request);
+            if (savedRequest != null)
+            {
+                String tmpUrl = savedRequest.getRequestUrl();
+                if (null != tmpUrl && "" != tmpUrl)
+                	url = tmpUrl;
+            }
+            	
+            return "redirect:" + url;
         }catch (AuthenticationException e) {
         	logger.error("登录失败错误信息:"+e);
             token.clear();
