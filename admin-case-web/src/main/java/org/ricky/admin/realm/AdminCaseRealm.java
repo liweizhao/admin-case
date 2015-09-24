@@ -29,7 +29,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class AdminCaseRealm extends AuthorizingRealm {  
 	
-	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+	private static final Logger logger = LoggerFactory.getLogger(AdminCaseRealm.class);
 	
     /** 
      * 为当前登录的Subject授予角色和权限 
@@ -105,8 +105,6 @@ public class AdminCaseRealm extends AuthorizingRealm {
     	
     	UsernamePasswordToken token = (UsernamePasswordToken) authcToken;  
     	
-    	//logger.info("password:" + token.getPassword());
-    	
         try
 		{
 			ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[]
@@ -139,7 +137,7 @@ public class AdminCaseRealm extends AuthorizingRealm {
 		}
         
         SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(
-        		token.getUsername(), token.getPassword(), getName());  
+        		token.getUsername(), token.getPassword(), getName()); 
 
         return info; 
      

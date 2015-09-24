@@ -4,13 +4,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 public class RetInfo {
-	protected int retcode;
-	protected String retMsg;
+	protected int ret;
+	protected String msg;
 	
 	public RetInfo()
 	{
-		this.retcode = 0;
-		this.retMsg = "ok";
+		this.ret = 0;
+		this.msg = "ok";
 	}
 	
 	public void WrapException(Exception e)
@@ -20,7 +20,28 @@ public class RetInfo {
 		e.printStackTrace(ps);
 		ps.flush();
 
-		this.retcode = 1;
-		this.retMsg = bs.toString();
+		this.ret = 1;
+		this.msg = bs.toString();
+	}
+
+	public int getRetcode() {
+		return ret;
+	}
+
+	public void setRetcode(int retcode) {
+		this.ret = retcode;
+	}
+
+	public String getRetMsg() {
+		return msg;
+	}
+
+	public void setRetMsg(String retMsg) {
+		this.msg = retMsg;
+	}
+	
+	public String toJson()
+	{
+		return "{ret:" + this.ret + ",msg:\"" +  this.msg + "\"}";
 	}
 }

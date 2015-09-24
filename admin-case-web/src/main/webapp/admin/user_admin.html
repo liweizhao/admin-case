@@ -94,6 +94,7 @@ $scope.addUserClick = function (addUserFormData) {
     
     $scope.getUserListClick();
 };
+
 var userUpdate = $resource(userUrl.updateUrl, {}, actions);
 $scope.updateUserClick = function () {
     userUpdate.update($scope.modifyUser, function (data) {
@@ -101,6 +102,7 @@ $scope.updateUserClick = function () {
     $scope.mydata = data;
     });
 };
+
 var userDelete = $resource(userUrl.deleteUrl + "/:id", {id: '@id'}, actions);
 $scope.deleteUser = function (user) {
     userDelete.delete({id: user.id}, {}, function (data) {

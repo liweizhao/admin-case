@@ -12,17 +12,21 @@ import org.apache.shiro.web.servlet.ShiroHttpServletRequest;
 import org.apache.shiro.web.servlet.SimpleCookie;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.apache.shiro.web.util.WebUtils;
+import org.ricky.admin.controler.LoginController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.commons.lang.StringUtils;
 
 public class SessionManager extends DefaultWebSessionManager {  
-	  
+	private static final Logger logger = LoggerFactory.getLogger(SessionManager.class);
+	
     public SessionManager() {  
         super();  
     }  
       
     @Override  
     protected Serializable getSessionId(ServletRequest request, 
-    		ServletResponse response) {  
+    		ServletResponse response) {
         // 如果参数中包含“__sid”参数，则使用此sid会话。 例如：http://localhost/project?__sid=xxx&__cookie=true  
         // 其实这里还可以使用如下参数：cookie中的session名称：如：JSESSIONID=xxx,路径中的 ;JESSIONID=xxx，但建议还是使用 __sid参数。  
         String sid = request.getParameter("__sid");  
