@@ -16,9 +16,9 @@ import org.ricky.admin.util.ErrorCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
-
 import org.ricky.admin.api.pojo.LoginInfo;
 import org.ricky.admin.api.pojo.UserPo;
+import org.ricky.admin.api.common.CtrlInfo;
 import org.ricky.admin.api.service.UserService;
 
 public class UserServiceImpl implements UserService {
@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
 	@Resource
     private IUserDaoService userDaoService; 
 
-	public UserPo getUserById(int userId) {
+	public UserPo getUserById(CtrlInfo ctrlInfo, int userId) {
 		try {
 			UserDo userDo = this.userDaoService.getUserById(userId); 
 			userDo.setPassword("");
@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
-	public int AddUser(UserPo userPo) {
+	public int AddUser(CtrlInfo ctrlInfo, UserPo userPo) {
 		try {
 			String passwordEncrypted = EncryptUtil.encrypt(userPo.getPassword());
 			userPo.setPassword(passwordEncrypted);
@@ -71,17 +71,17 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
-	public int Login(LoginInfo loginInfo) {
+	public int Login(CtrlInfo ctrlInfo, LoginInfo loginInfo) {
 		// TODO Auto-generated method stub
 		return 1;
 	}
 
-	public int UpdateUser(UserPo user) {
+	public int UpdateUser(CtrlInfo ctrlInfo, UserPo user) {
 		// TODO Auto-generated method stub
 		return 1;
 	}
 
-	public UserPo getUserByName(String username) {
+	public UserPo getUserByName(CtrlInfo ctrlInfo, String username) {
 		try {
 			UserDo userDo = this.userDaoService.getUserByName(username);
 			userDo.setPassword("");
@@ -102,7 +102,7 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
-	public List<UserPo> getUserList(int page, int pagesize) {
+	public List<UserPo> getUserList(CtrlInfo ctrlInfo, int page, int pagesize) {
 		try {
 			List<UserDo> userDoList = this.userDaoService.getUserList(page, pagesize);
 			List<UserPo> userPoList = new ArrayList<UserPo>();
@@ -126,7 +126,7 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
-	public int CheckPassword(String username, String rawPassword) {
+	public int CheckPassword(CtrlInfo ctrlInfo, String username, String rawPassword) {
 		try
 		{
 			UserDo user = this.userDaoService.getUserByName(username);
