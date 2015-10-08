@@ -2,21 +2,22 @@ package org.ricky.admin.api.service;
 
 import java.util.List;
 
+import org.ricky.admin.api.common.CtrlInfo;
 import org.ricky.admin.api.pojo.LoginInfo;
 import org.ricky.admin.api.pojo.UserPo;
 
 public interface UserService {
     
-	UserPo getUserById(int userId);
+	UserPo getUserById(CtrlInfo ctrlInfo, int userId);
 	
-	int AddUser(UserPo user);
+	int AddUser(CtrlInfo ctrlInfo, UserPo user);
 	
-	int UpdateUser(UserPo user);
+	int UpdateUser(CtrlInfo ctrlInfo, UserPo user);
 	
-	UserPo getUserByName(String username);
+	UserPo getUserByName(CtrlInfo ctrlInfo, String username);
 	
-	List<UserPo> getUserList(int page, int pagesize);
+	List<UserPo> getUserList(CtrlInfo ctrlInfo, int page, int pagesize);
 	
-	int CheckPassword(String username, String rawPassword);
+	int CheckPassword(CtrlInfo ctrlInfo, String username, String rawPassword);
  
 }
