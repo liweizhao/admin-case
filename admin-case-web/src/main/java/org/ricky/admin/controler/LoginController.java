@@ -19,6 +19,7 @@ import org.apache.shiro.web.util.WebUtils;
 import org.ricky.admin.api.pojo.UserPo;
 import org.ricky.admin.model.LoginBean;
 import org.ricky.admin.util.RetInfo;
+import org.ricky.admin.util.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -27,6 +28,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 /**
  * Handles requests for the application home page.
@@ -40,9 +43,8 @@ public class LoginController {
 	public @ResponseBody RetInfo login(@RequestBody LoginBean loginBean, 
 			HttpServletRequest request) {	
 		RetInfo retInfo = new RetInfo();
-				
-		//String username = request.getParameter("username");
-		//String password = request.getParameter("password");
+		
+		String remoteAddress = Utils.getIpAddr(request);
 		
 		Subject user = SecurityUtils.getSubject();		
         UsernamePasswordToken token = new UsernamePasswordToken(
@@ -52,6 +54,7 @@ public class LoginController {
         try {
             user.login(token);
             
+            /*
             String url = "/protected/index.html";
             SavedRequest savedRequest = WebUtils.getSavedRequest(request);
             if (savedRequest != null)
@@ -60,6 +63,7 @@ public class LoginController {
                 if (null != tmpUrl && "" != tmpUrl)
                 	url = tmpUrl;
             }
+            */
             	
             return retInfo;
         } catch (AuthenticationException e) {

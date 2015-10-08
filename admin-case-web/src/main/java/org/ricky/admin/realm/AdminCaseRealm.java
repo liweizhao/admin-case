@@ -20,9 +20,11 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
+import org.ricky.admin.api.common.CtrlInfo;
 import org.ricky.admin.api.pojo.UserPo;
 import org.ricky.admin.api.service.UserService;
 import org.ricky.admin.controler.UserController;
+import org.ricky.admin.util.ServiceFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -40,23 +42,19 @@ public class AdminCaseRealm extends AuthorizingRealm {
      */  
     @Override  
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals){  
-    	logger.info("doGetAuthorizationInfo");  
+    	logger.info("doGetAuthorizationInfo"); 
     	
         try
 		{
-			ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[]
-					{"dubboConsumer.xml"});
-			
-	        context.start();
-	        	        
-	        UserService userService = (UserService)context.getBean("UserService"); // 获取远程服务代理
-	        logger.info("get service sucessfully");
+	        UserService userService = (UserService)ServiceFactory.getInstance().GetService("UserService");
         
 	        List<String> roles = new ArrayList<String>();  
 	        Set<String> permissions = new HashSet<String>();
 	        
-	        String name = (String) getAvailablePrincipal(principals);  
-	        UserPo userPo = userService.getUserByName(name);
+	        String name = (String) getAvailablePrincipal(principals);
+	        
+	        CtrlInfo ctrlInfo = new CtrlInfo();
+	        UserPo userPo = userService.getUserByName(ctrlInfo, name);
 	        if (userPo != null)
 	        {
 	        	if (userPo.getRole() == 1)
@@ -107,15 +105,11 @@ public class AdminCaseRealm extends AuthorizingRealm {
     	
         try
 		{
-			ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[]
-					{"dubboConsumer.xml"});
-			
-	        context.start();
+        	UserService userService = (UserService)ServiceFactory.getInstance().GetService("UserService");
 	        	        
-	        UserService userService = (UserService)context.getBean("UserService"); // 获取远程服务代理
-	        logger.info("get service sucessfully");
-	        	        
-	        int iRet = userService.CheckPassword(token.getUsername(), new String(token.getPassword())); // 执行远程方法
+	        CtrlInfo ctrlInfo = new CtrlInfo();
+	        int iRet = userService.CheckPassword(ctrlInfo, 
+	        		token.getUsername(), new String(token.getPassword())); // 执行远程方法
 	        
 	        logger.info("##########check password Ret:" + iRet);
 	        

@@ -112,4 +112,9 @@ public class UserController {
 		}
 	}
 	
+	@RequestMapping(value = "/get_user_info", method = RequestMethod.GET)  
+	public @ResponseBody Object getUserInfo(HttpServletRequest request) {	
+		return "";
+	}
+	
 }
