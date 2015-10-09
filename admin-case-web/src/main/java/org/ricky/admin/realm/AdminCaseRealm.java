@@ -1,7 +1,5 @@
 package org.ricky.admin.realm;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -23,11 +21,11 @@ import org.apache.shiro.subject.Subject;
 import org.ricky.admin.api.common.CtrlInfo;
 import org.ricky.admin.api.pojo.UserPo;
 import org.ricky.admin.api.service.UserService;
-import org.ricky.admin.controler.UserController;
 import org.ricky.admin.util.ServiceFactory;
+import org.ricky.admin.util.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 
 public class AdminCaseRealm extends AuthorizingRealm {  
 	
@@ -41,53 +39,37 @@ public class AdminCaseRealm extends AuthorizingRealm {
      * @see  比如说这里从数据库获取权限信息时,先去访问Spring3.1提供的缓存,而不使用Shior提供的AuthorizationCache 
      */  
     @Override  
-    protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals){  
-    	logger.info("doGetAuthorizationInfo"); 
-    	
-        try
-		{
+    protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {      	    	    	
+        try {
 	        UserService userService = (UserService)ServiceFactory.getInstance().GetService("UserService");
         
 	        List<String> roles = new ArrayList<String>();  
 	        Set<String> permissions = new HashSet<String>();
 	        
 	        String name = (String) getAvailablePrincipal(principals);
-	        
-	        CtrlInfo ctrlInfo = new CtrlInfo();
+	        	    
+	        CtrlInfo ctrlInfo = (CtrlInfo)Utils.getCurrentSession().getAttribute("CTRL_INFO");
+	        logger.info("username in session:" + ctrlInfo.getUin());
 	        UserPo userPo = userService.getUserByName(ctrlInfo, name);
-	        if (userPo != null)
-	        {
-	        	if (userPo.getRole() == 1)
-	        	{
-	        		logger.error("###admin login");
+	        if (userPo != null) {
+	        	if (userPo.getRole() == 1) {
 	        		roles.add("admin");
-	        		permissions.add("admin:manage");
-	        	}
-	        	else
+	        	} else
 	        	{
 	        		roles.add("member");
 	        	}
-		        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();  
-		        // 增加角色  
+	        	
+		        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();  		        
 		        info.addRoles(roles); 
 		        info.addStringPermissions(permissions);
+		        
 		        return info;	
 	        }
-		} 
-		catch(Exception e)
-		{
-			logger.error(e.toString());
-			ByteArrayOutputStream bs = new ByteArrayOutputStream();
-			PrintStream ps = new PrintStream(bs);
-			e.printStackTrace(ps);
-			ps.flush();
-			logger.error(bs.toString());
-			
+		} catch(Exception e) {
+			Utils.flushException(logger, e);			
 			throw new AuthorizationException();  
 		}
-    	
-        //若该方法什么都不做直接返回null的话,就会导致任何用户访问/admin/listUser.jsp时都会自动跳转到unauthorizedUrl指定的地址  
-        //详见applicationContext.xml中的<bean id="shiroFilter">的配置  
+
         return null;  
     }  
    
@@ -98,16 +80,16 @@ public class AdminCaseRealm extends AuthorizingRealm {
      */  
     @Override  
     protected AuthenticationInfo doGetAuthenticationInfo(
-    		AuthenticationToken authcToken) throws AuthenticationException { 
-    	logger.info("doGetAuthenticationInfo");  
-    	
+    		AuthenticationToken authcToken) throws AuthenticationException {     	
     	UsernamePasswordToken token = (UsernamePasswordToken) authcToken;  
+    	
+        CtrlInfo ctrlInfo = (CtrlInfo)Utils.getCurrentSession().getAttribute("CTRL_INFO");
+        logger.info("username in session:" + ctrlInfo.getUin());
     	
         try
 		{
         	UserService userService = (UserService)ServiceFactory.getInstance().GetService("UserService");
 	        	        
-	        CtrlInfo ctrlInfo = new CtrlInfo();
 	        int iRet = userService.CheckPassword(ctrlInfo, 
 	        		token.getUsername(), new String(token.getPassword())); // 执行远程方法
 	        
@@ -120,13 +102,7 @@ public class AdminCaseRealm extends AuthorizingRealm {
 		} 
 		catch(Exception e)
 		{
-			logger.error(e.toString());
-			ByteArrayOutputStream bs = new ByteArrayOutputStream();
-			PrintStream ps = new PrintStream(bs);
-			e.printStackTrace(ps);
-			ps.flush();
-			logger.error(bs.toString());
-			
+			Utils.flushException(logger, e);			
 			throw new AuthorizationException();  
 		}
         
@@ -142,9 +118,7 @@ public class AdminCaseRealm extends AuthorizingRealm {
      * 将一些数据放到ShiroSession中,以便于其它地方使用 
      * @see  比如Controller,使用时直接用HttpSession.getAttribute(key)就可以取到 
      */  
-    protected void setSession(Object key, Object value){  
-    	logger.info("setSession");  
-    	
+    protected void setSession(Object key, Object value){      	
         Subject currentUser = SecurityUtils.getSubject();  
         if(null != currentUser){  
             Session session = currentUser.getSession();  

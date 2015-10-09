@@ -1,22 +1,21 @@
 package org.ricky.admin.controler;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
+import org.ricky.admin.api.common.CtrlInfo;
 import org.ricky.admin.api.pojo.UserPo;
 import org.ricky.admin.api.service.UserService;
 import org.ricky.admin.util.RetInfo;
+import org.ricky.admin.util.ServiceFactory;
+import org.ricky.admin.util.Utils;
 
 /**
  * Handles requests for the application home page.
@@ -52,19 +51,16 @@ public class UserController {
         
 		try
 		{
-			ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[]
-					{"dubboConsumer.xml"});
-			
-	        context.start();	        
-	        UserService userService = (UserService)context.getBean("UserService"); // 获取远程服务代理
-	        logger.info("get serretMapvice sucessfully");
+			UserService userService = (UserService)ServiceFactory.getInstance().GetService("UserService");
 	        
-	        int ret = userService.AddUser(user);
+			CtrlInfo ctrlInfo = new CtrlInfo();
+	        int ret = userService.AddUser(ctrlInfo, user);
         
 	        logger.info("ret is:" + ret);        
 		} 
 		catch(Exception e)
 		{
+			Utils.flushException(logger, e);	
 			retInfo.WrapException(e);
 		}
 	    
@@ -89,25 +85,16 @@ public class UserController {
 		        
 		try
 		{
-			ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[]
-					{"dubboConsumer.xml"});
-			
-	        context.start();	        
-	        UserService userService = (UserService)context.getBean("UserService"); // 获取远程服务代理
-	        logger.info("get service sucessfully");
+			UserService userService = (UserService)ServiceFactory.getInstance().GetService("UserService");
 	        
-	        List<UserPo> userList = userService.getUserList(page, pagesize);
+	        CtrlInfo ctrlInfo = new CtrlInfo();
+	        List<UserPo> userList = userService.getUserList(ctrlInfo, page, pagesize);
         
 	        return userList;  
 		} 
 		catch(Exception e)
 		{
-			logger.error(e.toString());
-			ByteArrayOutputStream bs = new ByteArrayOutputStream();
-			PrintStream ps = new PrintStream(bs);
-			e.printStackTrace(ps);
-			ps.flush();
-			logger.error(bs.toString());
+			Utils.flushException(logger, e);	
 			return "error";
 		}
 	}

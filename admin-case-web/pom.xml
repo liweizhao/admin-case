@@ -81,6 +81,18 @@
         </dependency>
         
         <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aop</artifactId>
+            <version>${org.springframework-version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aspects</artifactId>
+            <version>${org.springframework-version}</version>
+        </dependency>
+        
+        <dependency>
 	      	<groupId>commons-collections</groupId>
 	      	<artifactId>commons-collections</artifactId>
 	      	<version>3.2.1</version>
@@ -111,14 +123,7 @@
       		<groupId>org.apache.shiro</groupId>
       		<artifactId>shiro-quartz</artifactId>
       		<version>1.2.1</version>
-    	</dependency>
-				
-		<!-- AspectJ -->
-		<dependency>
-			<groupId>org.aspectj</groupId>
-			<artifactId>aspectjrt</artifactId>
-			<version>${org.aspectj-version}</version>
-		</dependency>	
+    	</dependency>	
 		
 		<!-- Logging -->
 		<dependency>
@@ -233,17 +238,36 @@
 			<version>0.26</version>
 		</dependency>
 
-
-		<dependency>
-			<groupId>org.ricky</groupId>
-			<artifactId>admin-case-api</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
 		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
 			<version>2.6</version>
 		</dependency>
+		
+		<!-- AspectJ -->		
+      	<dependency>
+	        <groupId>org.aspectj</groupId>
+	        <artifactId>aspectjrt</artifactId>
+	        <version>${org.aspectj-version}</version>
+      	</dependency>
+      	<dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>${org.aspectj-version}</version>
+        </dependency>
+        
+        <dependency>
+			<groupId>cglib</groupId>
+			<artifactId>cglib</artifactId>
+			<version>2.2.2</version>
+		</dependency>
+      	
+      	<dependency>
+			<groupId>org.ricky</groupId>
+			<artifactId>admin-case-api</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+      	
 	</dependencies>
     <build>
         <plugins>

@@ -1,7 +1,5 @@
 package org.ricky.admin.util;
 
-import org.ricky.admin.api.service.UserService;
-import org.ricky.admin.realm.AdminCaseRealm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -16,11 +14,23 @@ public class ServiceFactory {
 	static {
 		context = new ClassPathXmlApplicationContext(new String[]
 				{"dubboConsumer.xml"});		
-        context.start();       	        
+        context.start();     	        
+	}
+	
+	private ServiceFactory() {		
 	}
 
 	public static ServiceFactory getInstance() {
-		return instance;
+		 if(instance == null) {
+	         synchronized(ServiceFactory.class) {
+	        	 ServiceFactory temp = instance;
+	            if(temp == null) {
+	               temp = new ServiceFactory();
+	               instance = temp;
+	            }
+	         }
+		 }
+		 return instance;
 	}
 	
 	public Object GetService(String serviceName) {
